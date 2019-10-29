@@ -5,34 +5,23 @@ const Theme = {
   DARK: 'dark-theme',
 };
 
-if (localStorage.getItem('Theme') === Theme.DARK) {
-  refs.switchTheme.checked = true;
-  if (refs.body.classList.contains('light-theme')) {
-    refs.body.classList.remove('light-theme');
-  }
-  refs.body.classList.add('dark-theme');
-} else {
-  if (refs.body.classList.contains('dark-theme')) {
-    refs.body.classList.remove('dark-theme');
-  }
-  refs.body.classList.add('light-theme');
+const theme = 'theme';
+const localTheme = localStorage.getItem(theme);
+
+if (localTheme === Theme.DARK) {
+  refs.body.classList.add(localTheme);
+  refs.switchTheme.checked = localTheme;
 }
 
-refs.switchTheme.addEventListener('change', switchThemeFunction);
-
-function switchThemeFunction() {
-  event.preventDefault();
-  if (refs.switchTheme.checked) {
-    localStorage.setItem('Theme', Theme.DARK);
-    if (refs.body.classList.contains('light-theme')) {
-      refs.body.classList.remove('light-theme');
-    }
-    refs.body.classList.add('dark-theme');
+function changeTheme(event) {
+  const { target } = event;
+  if (target.checked) {
+    refs.body.classList = [Theme.DARK];
+    localStorage.setItem(theme, Theme.DARK);
   } else {
-    localStorage.setItem('Theme', Theme.LIGHT);
-    if (refs.body.classList.contains('dark-theme')) {
-      refs.body.classList.remove('dark-theme');
-    }
-    refs.body.classList.add('light-theme');
+    refs.body.classList = [Theme.LIGHT];
+    localStorage.setItem(theme, Theme.LIGHT);
   }
 }
+
+refs.switchTheme.addEventListener('change', changeTheme);
